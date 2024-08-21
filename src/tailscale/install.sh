@@ -5,7 +5,14 @@
 
 set -euo pipefail
 
-tailscale_url="https://pkgs.tailscale.com/stable/tailscale_${VERSION}_amd64.tgz"
+platform=$(uname -m)
+if [ "$platform" = "x86_64" ]; then
+    tailscale_url="https://pkgs.tailscale.com/stable/tailscale_${VERSION}_amd64.tgz"
+elif [ "$platform" = "aarch64" ]; then
+elif [ "$platform" = "aarch64" ] || [ "$platform" = "arm64" ]; then
+    tailscale_url="https://pkgs.tailscale.com/stable/tailscale_${VERSION}_arm64.tgz"
+else
+    echo "Unsupported platform: $platform"
 
 download() {
   if command -v curl &> /dev/null; then
